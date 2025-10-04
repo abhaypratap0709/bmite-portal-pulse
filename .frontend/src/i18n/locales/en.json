@@ -1,0 +1,103 @@
+{
+  "nav": {
+    "home": "Home",
+    "admissions": "Admissions",
+    "courses": "Courses",
+    "placements": "Placements",
+    "aboutUs": "About Us",
+    "contact": "Contact",
+    "studentPortal": "Student Portal"
+  },
+  "hero": {
+    "title": "Shape Your Future at",
+    "subtitle": "Bhagwan Mahaveer Institute of Engineering & Technology - Where innovation meets excellence. Join India's leading engineering institution and build a career that matters.",
+    "applyNow": "Apply Now",
+    "virtualTour": "Virtual Tour",
+    "courses": "Courses",
+    "alumni": "Alumni Network",
+    "placementRate": "Placement Rate"
+  },
+  "courses": {
+    "title": "Featured Courses",
+    "subtitle": "Explore our world-class engineering programs designed to prepare you for the challenges of tomorrow.",
+    "popular": "Popular",
+    "seats": "Seats",
+    "years": "Years",
+    "learnMore": "Learn More",
+    "viewAll": "View All Courses",
+    "computerScience": {
+      "name": "Computer Science Engineering",
+      "description": "Master the fundamentals of computing, AI, and software development."
+    },
+    "mechanical": {
+      "name": "Mechanical Engineering",
+      "description": "Design, analyze and manufacture innovative mechanical systems."
+    },
+    "electronics": {
+      "name": "Electronics & Communication",
+      "description": "Explore cutting-edge electronics and communication technologies."
+    },
+    "civil": {
+      "name": "Civil Engineering",
+      "description": "Build the infrastructure of tomorrow with sustainable design."
+    }
+  },
+  "placements": {
+    "title": "Placement Highlights",
+    "subtitle": "Our students consistently secure positions at top companies worldwide with excellent packages.",
+    "placementRate": "Placement Rate",
+    "topPackage": "Top Package",
+    "companies": "Companies",
+    "trends": "Placement Trends",
+    "distribution": "Sector-wise Distribution",
+    "recruiters": "Top Recruiters",
+    "classOf": "Class of"
+  },
+  "dashboard": {
+    "login": "Student Portal Login",
+    "loginDesc": "Enter your credentials to access your dashboard",
+    "email": "Email Address",
+    "password": "Password",
+    "forgotPassword": "Forgot Password?",
+    "loginButton": "Login",
+    "welcomeBack": "Welcome back",
+    "logout": "Logout",
+    "courseProgress": "Course Progress",
+    "todaySchedule": "Today's Schedule",
+    "quickAccess": "Quick Access",
+    "announcements": "Announcements"
+  },
+  "admin": {
+    "title": "Admin Panel",
+    "subtitle": "Manage your institution's portal",
+    "dashboard": "Dashboard",
+    "applications": "Applications",
+    "newsManagement": "News Management",
+    "totalStudents": "Total Students",
+    "totalApplications": "Total Applications",
+    "pendingReview": "Pending Review",
+    "totalCourses": "Total Courses",
+    "registeredUsers": "Registered users",
+    "allTime": "All time",
+    "needAttention": "Need attention",
+    "availablePrograms": "Available programs"
+  },
+  "chatbot": {
+    "greeting": "Hello! 👋 I'm BMIET Assistant.\n\nI can help you with:\n\n📚 Courses & Programs\n📝 Admission Process\n💰 Fees & Scholarships\n🎯 Placements\n🏢 Campus Facilities\n📞 Contact Info\n🖥️ Portal Help\n\nWhat would you like to know?",
+    "askAnything": "Ask me anything...",
+    "admission": "📋 Admission Information\n\nEligibility Requirements:\n  • 10th Grade: Minimum 60%\n  • 12th Grade (PCM): Minimum 70%\n\nApplication Process:\n  1. Fill application form online\n  2. Upload required documents\n  3. Pay application fees\n  4. Submit application\n\nTrack Status: Student Portal\nContact: admissions@bmiet.edu.in\n\nVisit our Admissions page for more details!",
+    "fees": "💰 Fee Structure (Annual)\n\nTuition Fees:\n  • CSE/ECE: ₹1,30,000 - ₹1,50,000\n  • Mechanical/Civil/EE: ₹1,10,000 - ₹1,20,000\n\nAdditional Fees:\n  • Hostel: ₹50,000\n  • Transport: ₹20,000\n  • Other charges: ₹10,000\n\n💡 Scholarships available!\n📅 Flexible payment plans offered",
+    "placements": "🎯 Placement Highlights\n\nSuccess Rate: 97%\n\nPackages:\n  • Highest: ₹45 LPA\n  • Average: ₹8 LPA\n\nTop Recruiters:\n  Google • Amazon • TCS\n  Infosys • Microsoft • Wipro\n\n150+ companies visit campus annually\nDedicated training & placement support"
+  },
+  "footer": {
+    "about": "Bhagwan Mahaveer Institute of Engineering & Technology - Shaping future engineers with excellence in education and innovation.",
+    "quickLinks": "Quick Links",
+    "resources": "Resources",
+    "contactUs": "Contact Us",
+    "newsletter": "Newsletter",
+    "yourEmail": "Your email",
+    "subscribe": "Subscribe",
+    "copyright": "© 2025 Bhagwan Mahaveer Institute of Engineering & Technology. All rights reserved."
+  }
+}
+
