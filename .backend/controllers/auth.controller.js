@@ -1,11 +1,31 @@
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 const User = require('../models/User.model');
 
-// Generate JWT token
-const generateToken = (id) => {
+// Generate JWT access token
+const generateAccessToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRE || '7d',
+    expiresIn: process.env.JWT_ACCESS_EXPIRE || '15m',
   });
+};
+
+// Generate JWT refresh token
+const generateRefreshToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_REFRESH_SECRET, {
+    expiresIn: process.env.JWT_REFRESH_EXPIRE || '7d',
+  });
+};
+
+// Generate token pair
+const generateTokens = (id) => {
+  const accessToken = generateAccessToken(id);
+  const refreshToken = generateRefreshToken(id);
+  
+  return {
+    accessToken,
+    refreshToken,
+    expiresIn: process.env.JWT_ACCESS_EXPIRE || '15m',
+  };
 };
 
 // @desc    Register new user
@@ -32,8 +52,16 @@ exports.register = async (req, res, next) => {
       role: role || 'student',
     });
 
-    // Generate token
-    const token = generateToken(user._id);
+    // Generate tokens
+    const tokens = generateTokens(user._id);
+
+    // Set refresh token as httpOnly cookie
+    res.cookie('refreshToken', tokens.refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
 
     res.status(201).json({
       success: true,
@@ -45,7 +73,8 @@ exports.register = async (req, res, next) => {
           role: user.role,
           profile: user.profile,
         },
-        token,
+        accessToken: tokens.accessToken,
+        expiresIn: tokens.expiresIn,
       },
     });
   } catch (error) {
@@ -100,8 +129,16 @@ exports.login = async (req, res, next) => {
     user.lastLogin = new Date();
     await user.save({ validateBeforeSave: false });
 
-    // Generate token
-    const token = generateToken(user._id);
+    // Generate tokens
+    const tokens = generateTokens(user._id);
+
+    // Set refresh token as httpOnly cookie
+    res.cookie('refreshToken', tokens.refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
 
     res.status(200).json({
       success: true,
@@ -114,7 +151,8 @@ exports.login = async (req, res, next) => {
           profile: user.profile,
           academic: user.academic,
         },
-        token,
+        accessToken: tokens.accessToken,
+        expiresIn: tokens.expiresIn,
       },
     });
   } catch (error) {
@@ -172,10 +210,66 @@ exports.updateProfile = async (req, res, next) => {
   }
 };
 
-// @desc    Logout user (client-side token removal)
+// @desc    Refresh access token
+// @route   POST /api/auth/refresh
+// @access  Public
+exports.refreshToken = async (req, res, next) => {
+  try {
+    const { refreshToken } = req.cookies;
+
+    if (!refreshToken) {
+      return res.status(401).json({
+        success: false,
+        message: 'Refresh token not provided',
+      });
+    }
+
+    // Verify refresh token
+    const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
+    const user = await User.findById(decoded.id);
+
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: 'Invalid refresh token',
+      });
+    }
+
+    // Generate new tokens
+    const tokens = generateTokens(user._id);
+
+    // Set new refresh token as httpOnly cookie
+    res.cookie('refreshToken', tokens.refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
+    res.status(200).json({
+      success: true,
+      message: 'Token refreshed successfully',
+      data: {
+        accessToken: tokens.accessToken,
+        expiresIn: tokens.expiresIn,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Logout user (clear refresh token)
 // @route   POST /api/auth/logout
 // @access  Private
 exports.logout = async (req, res) => {
+  // Clear refresh token cookie
+  res.clearCookie('refreshToken', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
+  });
+
   res.status(200).json({
     success: true,
     message: 'Logged out successfully',

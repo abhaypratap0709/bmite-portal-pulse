@@ -106,7 +106,9 @@ userSchema.pre('save', async function (next) {
     return next();
   }
 
-  const salt = await bcrypt.genSalt(10);
+  // Use configurable salt rounds from environment
+  const saltRounds = parseInt(process.env.BCRYPT_SALT_ROUNDS) || 12;
+  const salt = await bcrypt.genSalt(saltRounds);
   this.password = await bcrypt.hash(this.password, salt);
   next();
 });

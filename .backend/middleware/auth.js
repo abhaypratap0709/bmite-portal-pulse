@@ -15,6 +15,7 @@ exports.protect = async (req, res, next) => {
       return res.status(401).json({
         success: false,
         message: 'Not authorized to access this route. Please login.',
+        code: 'NO_TOKEN',
       });
     }
 
@@ -29,6 +30,7 @@ exports.protect = async (req, res, next) => {
         return res.status(401).json({
           success: false,
           message: 'User not found',
+          code: 'USER_NOT_FOUND',
         });
       }
 
@@ -36,15 +38,40 @@ exports.protect = async (req, res, next) => {
         return res.status(401).json({
           success: false,
           message: 'User account is deactivated',
+          code: 'ACCOUNT_DEACTIVATED',
+        });
+      }
+
+      // Check if token was issued after last password change (if implemented)
+      if (req.user.passwordChangedAt && decoded.iat < req.user.passwordChangedAt.getTime() / 1000) {
+        return res.status(401).json({
+          success: false,
+          message: 'Password was recently changed. Please login again.',
+          code: 'PASSWORD_CHANGED',
         });
       }
 
       next();
     } catch (error) {
-      return res.status(401).json({
-        success: false,
-        message: 'Token is invalid or expired',
-      });
+      if (error.name === 'TokenExpiredError') {
+        return res.status(401).json({
+          success: false,
+          message: 'Token has expired. Please refresh your token.',
+          code: 'TOKEN_EXPIRED',
+        });
+      } else if (error.name === 'JsonWebTokenError') {
+        return res.status(401).json({
+          success: false,
+          message: 'Invalid token. Please login again.',
+          code: 'INVALID_TOKEN',
+        });
+      } else {
+        return res.status(401).json({
+          success: false,
+          message: 'Token verification failed',
+          code: 'TOKEN_VERIFICATION_FAILED',
+        });
+      }
     }
   } catch (error) {
     return res.status(500).json({

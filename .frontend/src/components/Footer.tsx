@@ -1,22 +1,28 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Facebook, Twitter, Linkedin, Instagram, Mail, Phone, MapPin } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import LoadingButton from "@/components/ui/loading-button";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/hooks/use-toast";
+import toast from "react-hot-toast";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
-  const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
 
-  const handleNewsletterSubmit = (e: React.FormEvent) => {
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email) {
-      toast({
-        title: "Subscribed!",
-        description: "You've been added to our newsletter.",
-      });
+    if (!email) return;
+    
+    setLoading(true);
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      toast.success("Successfully subscribed to our newsletter!");
       setEmail("");
+    } catch (error) {
+      toast.error("Failed to subscribe. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -33,12 +39,12 @@ const Footer = () => {
     }
   };
 
-  const quickLinks = [
-    { name: "Home", path: "/" },
-    { name: "Admissions", path: "/admissions" },
-    { name: "Courses", path: "/#courses" },
-    { name: "Placements", path: "/#placements" },
-  ];
+    const quickLinks = [
+      { name: "Home", path: "/" },
+      { name: "Admissions", path: "/admissions" },
+      { name: "Courses", path: "/#courses" },
+      { name: "Placements", path: "/#placements" },
+    ];
 
   const resources = [
     { name: "Student Portal", path: "/dashboard" },
@@ -139,7 +145,14 @@ const Footer = () => {
                   className="flex-1"
                   aria-label="Email for newsletter"
                 />
-                <Button type="submit" size="sm">Subscribe</Button>
+                <LoadingButton 
+                  type="submit" 
+                  size="sm"
+                  loading={loading}
+                  loadingText="Subscribing..."
+                >
+                  Subscribe
+                </LoadingButton>
               </div>
             </form>
           </div>

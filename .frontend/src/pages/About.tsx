@@ -43,13 +43,13 @@ const About = () => {
       <Header />
       
       {/* Hero Section */}
-      <section className="relative py-20 bg-gradient-to-br from-primary/10 to-secondary/10">
+      <section className="relative py-20 bg-gradient-to-br from-primary to-primary/80">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              About <span className="text-primary">BMIET</span>
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white">
+              About <span className="text-secondary">BMIET</span>
             </h1>
-            <p className="text-xl text-muted-foreground mb-8">
+            <p className="text-xl text-white/90 mb-8">
               Bhagwan Mahaveer Institute of Engineering & Technology - Shaping the future of engineering education in India.
             </p>
           </div>
@@ -57,7 +57,7 @@ const About = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16">
+      <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
@@ -74,7 +74,7 @@ const About = () => {
       </section>
 
       {/* Mission & Vision */}
-      <section className="py-16 bg-muted/50">
+      <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12">
             <Card>
@@ -111,7 +111,7 @@ const About = () => {
       </section>
 
       {/* Values */}
-      <section className="py-16">
+      <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">Our Core Values</h2>
@@ -135,7 +135,7 @@ const About = () => {
       </section>
 
       {/* History */}
-      <section className="py-16 bg-muted/50">
+      <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl font-bold text-center mb-12">Our Journey</h2>

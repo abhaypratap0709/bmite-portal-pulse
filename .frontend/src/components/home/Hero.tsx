@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, PlayCircle } from "lucide-react";
+import { ArrowRight, PlayCircle, LogIn, GraduationCap } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 import heroImage from "@/assets/bg2.png";
 
 const Hero = () => {
@@ -36,7 +37,7 @@ const Hero = () => {
           alt="BMIET Campus with students"
           className="h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/70"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/85 to-primary/75"></div>
       </div>
 
       {/* Content */}
@@ -52,10 +53,17 @@ const Hero = () => {
           {/* CTA Buttons */}
           <div className="mb-12 flex flex-wrap gap-4">
             <Button variant="hero" size="xl" className="group" asChild>
-              <a href="/admissions">
-                {t("hero.applyNow")}
+              <Link to="/dashboard">
+                <LogIn className="mr-2 h-5 w-5" />
+                Student Portal
                 <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-              </a>
+              </Link>
+            </Button>
+            <Button variant="hero-outline" size="xl" className="group" asChild>
+              <Link to="/admissions">
+                <GraduationCap className="mr-2 h-5 w-5" />
+                {t("hero.applyNow")}
+              </Link>
             </Button>
             <Button variant="hero-outline" size="xl" className="group" asChild>
               <a href="#virtual-tour">

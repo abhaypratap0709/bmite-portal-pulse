@@ -6,6 +6,8 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const compression = require('compression');
 const mongoSanitize = require('express-mongo-sanitize');
+const xss = require('xss-clean');
+const cookieParser = require('cookie-parser');
 
 // Import routes
 const authRoutes = require('./routes/auth.routes');
@@ -18,6 +20,7 @@ const adminRoutes = require('./routes/admin.routes');
 // Import middleware
 const errorHandler = require('./middleware/errorHandler');
 const rateLimiter = require('./middleware/rateLimiter');
+const { sanitizeInput } = require('./middleware/security');
 
 // Initialize app
 const app = express();
@@ -35,9 +38,39 @@ mongoose
     process.exit(1);
   });
 
-// Security middleware
-app.use(helmet());
-app.use(mongoSanitize());
+// Security middleware - Enhanced Helmet configuration
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      scriptSrc: ["'self'"],
+      imgSrc: ["'self'", "data:", "https:"],
+      connectSrc: ["'self'"],
+      fontSrc: ["'self'"],
+      objectSrc: ["'none'"],
+      mediaSrc: ["'self'"],
+      frameSrc: ["'none'"],
+    },
+  },
+  crossOriginEmbedderPolicy: false,
+  hsts: {
+    maxAge: 31536000,
+    includeSubDomains: true,
+    preload: true
+  }
+}));
+
+// MongoDB injection protection
+app.use(mongoSanitize({
+  replaceWith: '_'
+}));
+
+// XSS protection
+app.use(xss());
+
+// Input sanitization
+app.use(sanitizeInput);
 
 // CORS configuration
 app.use(
@@ -46,6 +79,9 @@ app.use(
     credentials: true,
   })
 );
+
+// Cookie parsing middleware
+app.use(cookieParser());
 
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));

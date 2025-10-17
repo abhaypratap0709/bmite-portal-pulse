@@ -3,11 +3,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import LoadingButton from "@/components/ui/loading-button";
 import { Progress } from "@/components/ui/progress";
 import { Calendar, BookOpen, FileText, User, LogIn } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const API_URL = "http://localhost:5000/api";
 
@@ -51,7 +53,8 @@ const Dashboard = () => {
         localStorage.removeItem("token");
       }
     } catch (err) {
-      console.error("Failed to fetch profile:", err);
+      // Failed to fetch user profile - clear invalid token
+      // TODO: Implement proper error handling/logging service
       localStorage.removeItem("token");
     }
   };
@@ -73,8 +76,10 @@ const Dashboard = () => {
       const data = await response.json();
 
       if (response.ok) {
-        localStorage.setItem("token", data.data.token);
+        localStorage.setItem("token", data.data.accessToken);
         setUserData(data.data.user);
+        
+        toast.success(`Welcome back, ${data.data.user.profile?.firstName || data.data.user.email}!`);
         
         // Redirect admin users to admin panel
         if (data.data.user.role === "admin" || data.data.user.role === "faculty") {
@@ -84,11 +89,14 @@ const Dashboard = () => {
         
         setIsLoggedIn(true);
       } else {
-        setError(data.message || "Login failed. Please check your credentials.");
+        const errorMessage = data.message || "Login failed. Please check your credentials.";
+        setError(errorMessage);
+        toast.error(errorMessage);
       }
     } catch (err) {
-      setError("Unable to connect to server. Please try again.");
-      console.error("Login error:", err);
+      const errorMessage = "Unable to connect to server. Please try again.";
+      setError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -100,10 +108,11 @@ const Dashboard = () => {
     setUserData(null);
     setEmail("");
     setPassword("");
+    toast.success("Logged out successfully");
   };
 
   const handleForgotPassword = () => {
-    alert("Password reset link will be sent to your registered email.");
+    toast.success("Password reset link will be sent to your registered email.");
   };
 
   // Mock student data for display
@@ -130,7 +139,7 @@ const Dashboard = () => {
     <div className="min-h-screen flex flex-col">
       <Header />
       
-      <main className="flex-1 bg-muted/30">
+      <main className="flex-1 bg-background">
         {!isLoggedIn ? (
           // Login Form
           <section className="py-16 md:py-24">
@@ -190,9 +199,15 @@ const Dashboard = () => {
                         Forgot Password?
                       </Button>
 
-                      <Button type="submit" className="w-full" size="lg" disabled={loading}>
-                        {loading ? "Logging in..." : "Login"}
-                      </Button>
+                      <LoadingButton 
+                        type="submit" 
+                        className="w-full" 
+                        size="lg" 
+                        loading={loading}
+                        loadingText="Logging in..."
+                      >
+                        Login
+                      </LoadingButton>
                       
                       <div className="text-xs text-muted-foreground text-center mt-4">
                         <p>Test credentials:</p>
@@ -217,9 +232,9 @@ const Dashboard = () => {
                     {studentData.studentId} • {studentData.course}
                   </p>
                 </div>
-                <Button variant="outline" onClick={handleLogout}>
+                <LoadingButton variant="outline" onClick={handleLogout}>
                   Logout
-                </Button>
+                </LoadingButton>
               </div>
 
               <div className="grid gap-6 lg:grid-cols-3">
@@ -255,7 +270,7 @@ const Dashboard = () => {
                         {studentData.upcomingClasses.map((class_, index) => (
                           <div
                             key={index}
-                            className="flex items-start justify-between border-l-4 border-primary bg-muted/50 p-4 rounded-r"
+                            className="flex items-start justify-between border-l-4 border-primary bg-card p-4 rounded-r"
                           >
                             <div>
                               <div className="font-semibold">{class_.subject}</div>

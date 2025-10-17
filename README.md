@@ -214,6 +214,15 @@ cd .backend
 
 This project is licensed under the MIT License.
 
+## 🤖 AI Development Tools
+
+This project was built using AI-assisted development:
+
+- **Frontend Development**: Lovebel AI for React component generation and optimization
+- **Code Enhancement**: Cursor AI for intelligent code completion and refactoring
+- **Backend Development**: Claude AI for API design and database schema optimization
+- **Fine-tuning**: Custom AI prompts for project-specific requirements
+
 ## 👥 Team
 
 **BMIET Vibe Coding Challenge - Stage 2**

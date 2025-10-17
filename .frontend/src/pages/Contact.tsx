@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import LoadingButton from "@/components/ui/loading-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Mail, Phone, MapPin, Clock, Send, CheckCircle } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import toast from "react-hot-toast";
 
 const Contact = () => {
   const { t } = useTranslation();
@@ -21,13 +22,32 @@ const Contact = () => {
     inquiryType: ""
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission here
-    console.log("Form submitted:", formData);
-    setIsSubmitted(true);
-    setTimeout(() => setIsSubmitted(false), 3000);
+    setLoading(true);
+    
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      toast.success("Message sent successfully! We'll get back to you soon.");
+      setIsSubmitted(true);
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        subject: "",
+        message: "",
+        inquiryType: ""
+      });
+      setTimeout(() => setIsSubmitted(false), 3000);
+    } catch (error) {
+      toast.error("Failed to send message. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -53,7 +73,7 @@ const Contact = () => {
     {
       icon: MapPin,
       title: "Visit Us",
-      details: ["BMIET Campus", "Education District, City", "State - 123456"],
+              details: ["BMIET Campus", "Raipur Rd, Behind Fazilpur Sub Station", "Sector 10, Sonipat, Haryana 131001"],
       color: "text-red-600"
     },
     {
@@ -69,13 +89,13 @@ const Contact = () => {
       <Header />
       
       {/* Hero Section */}
-      <section className="relative py-20 bg-gradient-to-br from-primary/10 to-secondary/10">
+      <section className="relative py-20 bg-gradient-to-br from-primary to-primary/80">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              Get in <span className="text-primary">Touch</span>
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white">
+              Get in <span className="text-secondary">Touch</span>
             </h1>
-            <p className="text-xl text-muted-foreground mb-8">
+            <p className="text-xl text-white/90 mb-8">
               We'd love to hear from you. Send us a message and we'll respond as soon as possible.
             </p>
           </div>
@@ -83,7 +103,7 @@ const Contact = () => {
       </section>
 
       {/* Contact Info & Form */}
-      <section className="py-16">
+      <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Contact Information */}
@@ -108,16 +128,35 @@ const Contact = () => {
                 ))}
               </div>
 
-              {/* Map Placeholder */}
+              {/* Interactive Map */}
               <Card className="mt-8">
                 <CardHeader>
                   <CardTitle>Campus Location</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="h-64 bg-muted rounded-lg flex items-center justify-center">
-                    <div className="text-center">
-                      <MapPin className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                      <p className="text-muted-foreground">Interactive Map Coming Soon</p>
+                  <div className="h-64 bg-card rounded-lg overflow-hidden">
+                    <iframe
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3504.0!2d77.0090!3d28.9939!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce2daa9eb4d0b%3A0x717971125923e5d!2sBMIET%20Campus%2C%20Raipur%20Rd%2C%20Behind%20Fazilpur%20Sub%20Station%2C%20Sector%2010%2C%20Sonipat%2C%20Haryana%20131001!5e0!3m2!1sen!2sin!4v1640995200000!5m2!1sen!2sin"
+                      width="100%"
+                      height="100%"
+                      style={{ border: 0 }}
+                      allowFullScreen
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      title="BMIET Campus Location"
+                    />
+                  </div>
+                  <div className="mt-4 p-3 bg-muted/50 rounded-lg">
+                    <div className="flex items-start gap-3">
+                      <MapPin className="h-5 w-5 text-primary mt-0.5" />
+                      <div>
+                        <p className="font-medium text-sm">BMIET Campus</p>
+                        <p className="text-sm text-muted-foreground">
+                          Raipur Rd, Behind Fazilpur Sub Station<br />
+                          Sector 10, Sonipat, Haryana 131001<br />
+                          <span className="text-xs">Click on the map above to view directions</span>
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </CardContent>
@@ -218,10 +257,16 @@ const Contact = () => {
                         />
                       </div>
 
-                      <Button type="submit" className="w-full" size="lg">
+                      <LoadingButton 
+                        type="submit" 
+                        className="w-full" 
+                        size="lg"
+                        loading={loading}
+                        loadingText="Sending..."
+                      >
                         <Send className="h-4 w-4 mr-2" />
                         Send Message
-                      </Button>
+                      </LoadingButton>
                     </form>
                   )}
                 </CardContent>
@@ -232,7 +277,7 @@ const Contact = () => {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-16 bg-muted/50">
+      <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl font-bold text-center mb-12">Frequently Asked Questions</h2>

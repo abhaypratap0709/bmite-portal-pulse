@@ -16,8 +16,8 @@ const Header = () => {
     { name: t("nav.admissions"), path: "/admissions" },
     { name: t("nav.courses"), path: "/#courses" },
     { name: t("nav.placements"), path: "/#placements" },
-    { name: t("nav.aboutUs"), path: "/#about" },
-    { name: t("nav.contact"), path: "/#contact" },
+    { name: t("nav.aboutUs"), path: "/about" },
+    { name: t("nav.contact"), path: "/contact" },
   ];
 
   const isActive = (path: string) => {
@@ -56,7 +56,7 @@ const Header = () => {
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden items-center gap-6 md:flex">
+        <div className="hidden items-center gap-4 lg:gap-6 xl:flex">
           {navLinks.map((link) => (
             <Link
               key={link.path}
@@ -77,19 +77,19 @@ const Header = () => {
 
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden"
+          className="xl:hidden p-2 rounded-md hover:bg-accent transition-colors"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
           aria-expanded={mobileMenuOpen}
         >
-          {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </nav>
 
       {/* Mobile Navigation */}
       {mobileMenuOpen && (
-        <div className="border-t bg-background md:hidden animate-fade-in">
-          <div className="container mx-auto flex flex-col space-y-3 px-4 py-4">
+        <div className="border-t bg-background xl:hidden animate-fade-in shadow-lg">
+          <div className="container mx-auto flex flex-col space-y-4 px-4 py-6">
             {navLinks.map((link) => (
               <Link
                 key={link.path}

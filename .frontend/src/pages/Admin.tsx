@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import LoadingButton from "@/components/ui/loading-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
+import Spinner from "@/components/ui/spinner";
 import { 
   Users, 
   BookOpen, 
@@ -17,6 +19,7 @@ import {
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const API_URL = "http://localhost:5000/api";
 
@@ -97,7 +100,8 @@ const Admin = () => {
       }
 
     } catch (err) {
-      console.error("Failed to fetch admin data:", err);
+      // Failed to fetch admin data
+      // TODO: Implement proper error handling/logging service
       setError("Failed to load admin data");
     } finally {
       setLoading(false);
@@ -126,7 +130,8 @@ const Admin = () => {
         alert("Failed to update application status");
       }
     } catch (err) {
-      console.error("Error updating application:", err);
+      // Error updating application status
+      // TODO: Implement proper error handling/logging service
       alert("Error updating application");
     }
   };
@@ -160,7 +165,8 @@ const Admin = () => {
         alert("Failed to create news article");
       }
     } catch (err) {
-      console.error("Error creating news:", err);
+      // Error creating news article
+      // TODO: Implement proper error handling/logging service
       alert("Error creating news");
     }
   };
@@ -205,7 +211,7 @@ const Admin = () => {
     <div className="min-h-screen flex flex-col">
       <Header />
       
-      <main className="flex-1 bg-muted/30">
+      <main className="flex-1 bg-background">
         <section className="py-8">
           <div className="container mx-auto px-4">
             {/* Header */}

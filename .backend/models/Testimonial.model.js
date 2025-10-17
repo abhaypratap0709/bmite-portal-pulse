@@ -10,30 +10,37 @@ const testimonialSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Name is required'],
       trim: true,
+      minlength: [2, 'Name must be at least 2 characters'],
+      maxlength: [50, 'Name cannot exceed 50 characters'],
     },
     role: {
       type: String,
       required: [true, 'Role/Position is required'],
       trim: true,
+      maxlength: [100, 'Role cannot exceed 100 characters'],
     },
     company: {
       type: String,
+      required: [true, 'Company name is required'],
       trim: true,
+      maxlength: [100, 'Company name cannot exceed 100 characters'],
     },
     batch: {
       type: String,
-      required: true,
+      required: [true, 'Batch is required'],
+      maxlength: [20, 'Batch cannot exceed 20 characters'],
     },
     content: {
       type: String,
       required: [true, 'Testimonial content is required'],
-      maxlength: [500, 'Testimonial cannot exceed 500 characters'],
+      minlength: [50, 'Content must be at least 50 characters'],
+      maxlength: [1000, 'Content cannot exceed 1000 characters'],
     },
     rating: {
       type: Number,
-      min: 1,
-      max: 5,
-      default: 5,
+      required: [true, 'Rating is required'],
+      min: [1, 'Rating must be at least 1'],
+      max: [5, 'Rating cannot exceed 5'],
     },
     avatar: {
       type: String,
@@ -58,6 +65,10 @@ const testimonialSchema = new mongoose.Schema(
 
 // Index for efficient querying
 testimonialSchema.index({ isApproved: 1, isFeatured: 1 });
+testimonialSchema.index({ batch: 1 });
+testimonialSchema.index({ company: 1 });
+testimonialSchema.index({ rating: -1 });
+testimonialSchema.index({ order: 1, isFeatured: -1 }); // For ordering testimonials
 
 module.exports = mongoose.model('Testimonial', testimonialSchema);
 

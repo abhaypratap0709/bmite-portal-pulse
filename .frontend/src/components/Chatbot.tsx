@@ -23,7 +23,6 @@ const Chatbot = () => {
   const { t, i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
 
-  
   // Initialize with translated greeting
   const getGreeting = () => ({
     id: "1",
@@ -100,7 +99,8 @@ const Chatbot = () => {
           };
         }
       } catch (err) {
-        console.error("Failed to fetch courses:", err);
+        // Failed to fetch courses from API - using fallback data
+        // TODO: Implement proper error handling/logging service
       }
 
       return {
@@ -159,7 +159,8 @@ const Chatbot = () => {
           };
         }
       } catch (err) {
-        console.error("Failed to fetch placements:", err);
+        // Failed to fetch placement data from API - using fallback data
+        // TODO: Implement proper error handling/logging service
       }
 
       return {

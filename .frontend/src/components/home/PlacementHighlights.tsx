@@ -129,7 +129,7 @@ const PlacementHighlights = () => {
               {topRecruiters.map((company) => (
                 <div
                   key={company}
-                  className="flex h-16 w-32 items-center justify-center rounded-lg border bg-muted/50 px-4 text-sm font-semibold transition-all hover:scale-105 hover:shadow-md"
+                  className="flex h-16 w-32 items-center justify-center rounded-lg border bg-card px-4 text-sm font-semibold transition-all hover:scale-105 hover:shadow-md"
                 >
                   {company}
                 </div>

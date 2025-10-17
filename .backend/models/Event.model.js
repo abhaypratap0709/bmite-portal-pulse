@@ -6,15 +6,22 @@ const eventSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Event title is required'],
       trim: true,
+      minlength: [5, 'Title must be at least 5 characters'],
+      maxlength: [100, 'Title cannot exceed 100 characters'],
     },
     description: {
       type: String,
       required: [true, 'Event description is required'],
+      minlength: [20, 'Description must be at least 20 characters'],
+      maxlength: [2000, 'Description cannot exceed 2000 characters'],
     },
     eventType: {
       type: String,
-      enum: ['workshop', 'seminar', 'conference', 'fest', 'competition', 'webinar', 'cultural', 'sports', 'other'],
-      default: 'seminar',
+      enum: {
+        values: ['workshop', 'seminar', 'conference', 'competition', 'fest', 'other'],
+        message: 'Event type must be one of: workshop, seminar, conference, competition, fest, other'
+      },
+      required: true,
     },
     startDate: {
       type: Date,
@@ -25,19 +32,33 @@ const eventSchema = new mongoose.Schema(
       required: [true, 'End date is required'],
     },
     venue: {
-      location: String,
-      room: String,
-      capacity: Number,
+      location: {
+        type: String,
+        required: [true, 'Venue location is required'],
+        maxlength: [100, 'Location cannot exceed 100 characters'],
+      },
+      room: {
+        type: String,
+        maxlength: [50, 'Room name cannot exceed 50 characters'],
+      },
+      capacity: {
+        type: Number,
+        min: [1, 'Capacity must be at least 1'],
+      },
     },
     organizer: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
+      required: true,
     },
     organizerName: {
       type: String,
+      required: [true, 'Organizer name is required'],
+      maxlength: [100, 'Organizer name cannot exceed 100 characters'],
     },
     department: {
       type: String,
+      maxlength: [50, 'Department name cannot exceed 50 characters'],
     },
     registrationRequired: {
       type: Boolean,
@@ -52,6 +73,7 @@ const eventSchema = new mongoose.Schema(
     },
     maxParticipants: {
       type: Number,
+      min: [1, 'Maximum participants must be at least 1'],
     },
     registeredParticipants: [
       {
@@ -90,6 +112,11 @@ eventSchema.pre('save', function (next) {
 
 // Index for efficient querying
 eventSchema.index({ startDate: 1, status: 1 });
+eventSchema.index({ eventType: 1 });
+eventSchema.index({ isPublic: 1, status: 1 });
+eventSchema.index({ organizer: 1 });
+eventSchema.index({ department: 1 });
+eventSchema.index({ title: 'text', description: 'text' }); // Text search
 
 module.exports = mongoose.model('Event', eventSchema);
 
