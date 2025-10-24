@@ -8,7 +8,10 @@ exports.getCourses = async (req, res, next) => {
     const {
       department,
       admissionStatus,
-      search,
+      q, // search query
+      minFees,
+      maxFees,
+      duration,
       sort = '-popularityScore',
       page = 1,
       limit = 10,
@@ -17,16 +20,38 @@ exports.getCourses = async (req, res, next) => {
     // Build query
     const query = { isActive: true };
 
+    // Department filter
     if (department) {
       query.department = department;
     }
 
+    // Admission status filter
     if (admissionStatus) {
       query.admissionStatus = admissionStatus;
     }
 
-    if (search) {
-      query.$text = { $search: search };
+    // Duration filter
+    if (duration) {
+      query['duration.years'] = parseInt(duration);
+    }
+
+    // Fees range filter
+    if (minFees || maxFees) {
+      query['fees.total'] = {};
+      if (minFees) query['fees.total'].$gte = parseInt(minFees);
+      if (maxFees) query['fees.total'].$lte = parseInt(maxFees);
+    }
+
+    // Search functionality - case-insensitive regex search
+    if (q) {
+      const searchRegex = new RegExp(q, 'i');
+      query.$or = [
+        { name: searchRegex },
+        { code: searchRegex },
+        { description: searchRegex },
+        { 'highlights': searchRegex },
+        { 'prerequisites': searchRegex }
+      ];
     }
 
     // Execute query with pagination
@@ -40,6 +65,11 @@ exports.getCourses = async (req, res, next) => {
     // Get total count
     const total = await Course.countDocuments(query);
 
+    // Get filter options for frontend
+    const departments = await Course.distinct('department', { isActive: true });
+    const admissionStatuses = await Course.distinct('admissionStatus', { isActive: true });
+    const durations = await Course.distinct('duration.years', { isActive: true });
+
     res.status(200).json({
       success: true,
       count: courses.length,
@@ -47,6 +77,11 @@ exports.getCourses = async (req, res, next) => {
       page: parseInt(page),
       pages: Math.ceil(total / limit),
       data: courses,
+      filters: {
+        departments,
+        admissionStatuses,
+        durations,
+      },
     });
   } catch (error) {
     next(error);

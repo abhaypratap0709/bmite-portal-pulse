@@ -1,0 +1,137 @@
+{
+  "faqs": [
+    {
+      "id": 1,
+      "keywords": ["apply", "application", "admission", "how to apply", "admission process", "enroll"],
+      "question": "How to apply for admission?",
+      "answer": "To apply for admission, go to the Admissions page and click on 'Apply Now'. Fill out the application form with your details, upload required documents, and submit. You can also visit our campus for offline application.",
+      "category": "admissions"
+    },
+    {
+      "id": 2,
+      "keywords": ["deadline", "last date", "closing date", "application deadline", "when to apply"],
+      "question": "What is the application deadline?",
+      "answer": "The application deadline varies by course. Generally, applications open in March and close by May 31st. For specific deadlines, please check the Admissions page or contact our admission office at admission@bmiet.edu.in.",
+      "category": "admissions"
+    },
+    {
+      "id": 3,
+      "keywords": ["courses", "programs", "engineering", "branches", "what courses", "available courses"],
+      "question": "What courses are available?",
+      "answer": "We offer various engineering programs including Computer Science, Mechanical Engineering, Electronics & Communication, Civil Engineering, and more. Visit our Courses page to see the complete list with details about each program.",
+      "category": "courses"
+    },
+    {
+      "id": 4,
+      "keywords": ["fees", "fee structure", "cost", "tuition", "payment", "fee payment"],
+      "question": "What is the fee structure?",
+      "answer": "Fee structure varies by course and includes tuition fees, hostel fees (optional), and other charges. You can find detailed fee information on each course page or use the fee calculator on the Admissions page.",
+      "category": "fees"
+    },
+    {
+      "id": 5,
+      "keywords": ["placement", "jobs", "career", "recruitment", "companies", "placement record"],
+      "question": "What about placements?",
+      "answer": "Our placement record is excellent with 95%+ placement rate. Top companies like Google, Microsoft, Amazon, TCS, Infosys, and many others visit our campus. Visit the Placements section to see our placement statistics and success stories.",
+      "category": "placements"
+    },
+    {
+      "id": 6,
+      "keywords": ["scholarship", "financial aid", "merit scholarship", "fee concession"],
+      "question": "Are scholarships available?",
+      "answer": "Yes, we offer various scholarships based on merit, financial need, and special categories. Merit scholarships are available for top performers, and we also have government scholarships. Contact our scholarship office for more details.",
+      "category": "scholarships"
+    },
+    {
+      "id": 7,
+      "keywords": ["hostel", "accommodation", "boarding", "residence", "dormitory"],
+      "question": "Is hostel accommodation available?",
+      "answer": "Yes, we provide hostel facilities for both boys and girls with separate blocks. The hostel includes basic amenities, mess facilities, and 24/7 security. Hostel fees are additional to tuition fees.",
+      "category": "accommodation"
+    },
+    {
+      "id": 8,
+      "keywords": ["contact", "phone", "email", "address", "location", "visit"],
+      "question": "How can I contact the college?",
+      "answer": "You can contact us at:\n📞 Phone: +91-9876543210\n📧 Email: info@bmiet.edu.in\n📍 Address: BMIET Campus, Engineering Road, Delhi\n🌐 Website: www.bmiet.edu.in\nYou can also visit our Contact page for more details.",
+      "category": "contact"
+    },
+    {
+      "id": 9,
+      "keywords": ["eligibility", "qualification", "requirements", "criteria", "12th marks"],
+      "question": "What are the eligibility criteria?",
+      "answer": "For B.Tech programs, you need 10+2 with Physics, Chemistry, and Mathematics with minimum 50% marks (45% for reserved categories). You also need to qualify JEE Main or our entrance examination.",
+      "category": "eligibility"
+    },
+    {
+      "id": 10,
+      "keywords": ["campus", "facilities", "infrastructure", "library", "labs", "sports"],
+      "question": "What facilities are available on campus?",
+      "answer": "Our campus includes modern classrooms, well-equipped laboratories, a central library, computer centers, sports facilities, hostel accommodation, cafeteria, medical center, and transportation services.",
+      "category": "facilities"
+    },
+    {
+      "id": 11,
+      "keywords": ["entrance exam", "admission test", "exam pattern", "syllabus"],
+      "question": "Is there an entrance examination?",
+      "answer": "Yes, we conduct our own entrance examination for admission. The exam covers Physics, Chemistry, and Mathematics from 10+2 level. You can also apply with JEE Main scores. Check our Admissions page for exam dates and syllabus.",
+      "category": "examinations"
+    },
+    {
+      "id": 12,
+      "keywords": ["documents", "required documents", "certificates", "mark sheets"],
+      "question": "What documents are required for admission?",
+      "answer": "Required documents include: 10th and 12th mark sheets, transfer certificate, character certificate, passport size photographs, entrance exam scorecard (if applicable), and identity proof. Detailed list is available on the application form.",
+      "category": "documents"
+    },
+    {
+      "id": 13,
+      "keywords": ["loan", "education loan", "financial assistance", "bank loan"],
+      "question": "Do you help with education loans?",
+      "answer": "Yes, we have tie-ups with various banks for education loans at competitive interest rates. Our financial aid office can guide you through the loan application process and documentation requirements.",
+      "category": "loans"
+    },
+    {
+      "id": 14,
+      "keywords": ["transport", "bus", "commute", "travel", "transportation"],
+      "question": "Is transport facility available?",
+      "answer": "Yes, we provide bus transportation from various points in the city. The transport fee is included in the fee structure. Routes and timings are available at the transport office or on our website.",
+      "category": "transport"
+    },
+    {
+      "id": 15,
+      "keywords": ["library", "books", "study material", "resources"],
+      "question": "What library facilities are available?",
+      "answer": "Our central library has a vast collection of books, journals, e-resources, and digital databases. Students can access online resources, borrow books, and use study spaces. Library is open till late hours for student convenience.",
+      "category": "library"
+    }
+  ],
+  "greetings": [
+    "Hello! How can I help you today?",
+    "Hi there! What would you like to know?",
+    "Welcome! I'm here to answer your questions about BMIET.",
+    "Hello! Feel free to ask me anything about our courses, admissions, or campus life."
+  ],
+  "fallback_responses": [
+    "I'm not sure about that. Could you please rephrase your question or contact our admission office for specific details?",
+    "That's a great question! For more detailed information, please visit our website or contact us directly.",
+    "I don't have that information right now. You can find more details on our website or call our helpdesk.",
+    "For specific information about that, please contact our admission office or check our official website."
+  ],
+  "categories": {
+    "admissions": "📝 Admissions",
+    "courses": "📚 Courses",
+    "fees": "💰 Fees",
+    "placements": "🎯 Placements",
+    "scholarships": "🎓 Scholarships",
+    "accommodation": "🏠 Accommodation",
+    "contact": "📞 Contact",
+    "eligibility": "📋 Eligibility",
+    "facilities": "🏢 Facilities",
+    "examinations": "📝 Examinations",
+    "documents": "📄 Documents",
+    "loans": "🏦 Loans",
+    "transport": "🚌 Transport",
+    "library": "📖 Library"
+  }
+}

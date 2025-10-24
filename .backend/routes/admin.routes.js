@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {
   getDashboard,
+  getStats,
   createCourse,
   updateCourse,
   getAllApplications,
@@ -17,6 +18,7 @@ router.use(protect);
 router.use(authorize('admin', 'faculty'));
 
 router.get('/dashboard', getDashboard);
+router.get('/stats', getStats);
 
 // Course management
 router.post('/courses', authorize('admin'), createCourse);

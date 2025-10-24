@@ -2,12 +2,12 @@ const rateLimit = require('express-rate-limit');
 
 // General API rate limiter
 const limiter = rateLimit({
-  windowMs: (process.env.RATE_LIMIT_WINDOW || 15) * 60 * 1000, // 15 minutes default
-  max: process.env.RATE_LIMIT_MAX_REQUESTS || 100, // 100 requests per windowMs
+  windowMs: (process.env.RATE_LIMIT_WINDOW || 1) * 60 * 1000, // 1 minute default
+  max: process.env.RATE_LIMIT_MAX_REQUESTS || 10000, // 10000 requests per windowMs
   message: {
     success: false,
     message: 'Too many requests from this IP, please try again later.',
-    retryAfter: Math.ceil((process.env.RATE_LIMIT_WINDOW || 15) * 60),
+    retryAfter: Math.ceil((process.env.RATE_LIMIT_WINDOW || 1) * 60),
   },
   standardHeaders: true, // Return rate limit info in `RateLimit-*` headers
   legacyHeaders: false, // Disable `X-RateLimit-*` headers
@@ -15,7 +15,7 @@ const limiter = rateLimit({
     res.status(429).json({
       success: false,
       message: 'Too many requests from this IP, please try again later.',
-      retryAfter: Math.ceil((process.env.RATE_LIMIT_WINDOW || 15) * 60),
+      retryAfter: Math.ceil((process.env.RATE_LIMIT_WINDOW || 1) * 60),
     });
   },
 });

@@ -16,6 +16,8 @@ const applicationRoutes = require('./routes/application.routes');
 const newsRoutes = require('./routes/news.routes');
 const placementRoutes = require('./routes/placement.routes');
 const adminRoutes = require('./routes/admin.routes');
+const studentRoutes = require('./routes/student.routes');
+const announcementRoutes = require('./routes/announcement.routes');
 
 // Import middleware
 const errorHandler = require('./middleware/errorHandler');
@@ -28,10 +30,7 @@ const PORT = process.env.PORT || 5000;
 
 // Connect to MongoDB
 mongoose
-  .connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(process.env.MONGODB_URI)
   .then(() => console.log('✅ MongoDB connected successfully'))
   .catch((err) => {
     console.error('❌ MongoDB connection error:', err);
@@ -77,6 +76,10 @@ app.use(
   cors({
     origin: process.env.FRONTEND_URL || 'http://localhost:8080',
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+    exposedHeaders: ['X-Total-Count', 'X-Page-Count'],
+    maxAge: 86400, // 24 hours
   })
 );
 
@@ -117,6 +120,8 @@ app.use('/api/applications', applicationRoutes);
 app.use('/api/news', newsRoutes);
 app.use('/api/placements', placementRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/student', studentRoutes);
+app.use('/api/announcements', announcementRoutes);
 
 // Testimonials and events endpoints
 const testimonialRoutes = require('./routes/testimonial.routes');

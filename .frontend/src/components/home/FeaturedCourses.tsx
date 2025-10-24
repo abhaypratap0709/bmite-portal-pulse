@@ -95,7 +95,7 @@ const FeaturedCourses = () => {
               
               <CardFooter>
                 <Button variant="ghost" className="w-full group/btn" asChild>
-                  <a href="/admissions">
+                  <a href="/courses">
                     {t("courses.learnMore")}
                     <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
                   </a>
@@ -107,7 +107,7 @@ const FeaturedCourses = () => {
 
         <div className="mt-8 text-center">
           <Button variant="default" size="lg" asChild>
-            <a href="/admissions">{t("courses.viewAll")}</a>
+            <a href="/courses">{t("courses.viewAll")}</a>
           </Button>
         </div>
       </div>

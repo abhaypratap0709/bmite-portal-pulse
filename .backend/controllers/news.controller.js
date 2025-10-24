@@ -5,29 +5,56 @@ const News = require('../models/News.model');
 // @access  Public
 exports.getNews = async (req, res, next) => {
   try {
-    const { category, featured, status = 'published', page = 1, limit = 10 } = req.query;
+    const { 
+      category, 
+      featured, 
+      status = 'published', 
+      q, // search query
+      sort = '-publishDate',
+      page = 1, 
+      limit = 10 
+    } = req.query;
 
     // Build query
     const query = { status, isActive: true };
 
+    // Category filter
     if (category && category !== 'All') {
       query.category = category;
     }
 
+    // Featured filter
     if (featured === 'true') {
       query.featured = true;
+    }
+
+    // Search functionality - case-insensitive regex search
+    if (q) {
+      const searchRegex = new RegExp(q, 'i');
+      query.$or = [
+        { title: searchRegex },
+        { content: searchRegex },
+        { excerpt: searchRegex },
+        { tags: searchRegex },
+        { authorName: searchRegex }
+      ];
     }
 
     // Execute query with pagination
     const skip = (page - 1) * limit;
     const news = await News.find(query)
       .populate('author', 'profile.firstName profile.lastName')
-      .sort('-publishDate')
+      .sort(sort)
       .skip(skip)
       .limit(parseInt(limit));
 
     // Get total count
     const total = await News.countDocuments(query);
+
+    // Get filter options for frontend
+    const categories = await News.distinct('category', { status: 'published', isActive: true });
+    const tags = await News.distinct('tags', { status: 'published', isActive: true });
+    const flatTags = [...new Set(tags.flat())]; // Flatten and remove duplicates
 
     res.status(200).json({
       success: true,
@@ -36,6 +63,10 @@ exports.getNews = async (req, res, next) => {
       page: parseInt(page),
       pages: Math.ceil(total / limit),
       data: news,
+      filters: {
+        categories,
+        tags: flatTags,
+      },
     });
   } catch (error) {
     next(error);

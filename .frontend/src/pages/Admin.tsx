@@ -18,10 +18,11 @@ import {
 } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import AdminDashboard from "@/components/admin/AdminDashboard";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { API_ENDPOINTS } from "@/config/api";
 import toast from "react-hot-toast";
-
-const API_URL = "http://localhost:5000/api";
 
 interface DashboardStats {
   totalStudents: number;
@@ -49,6 +50,7 @@ interface Application {
 
 const Admin = () => {
   const navigate = useNavigate();
+  const { logout } = useAuth();
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [applications, setApplications] = useState<Application[]>([]);
@@ -74,7 +76,7 @@ const Admin = () => {
       setLoading(true);
       
       // Fetch dashboard stats
-      const statsRes = await fetch(`${API_URL}/admin/dashboard`, {
+      const statsRes = await fetch(API_ENDPOINTS.ADMIN.DASHBOARD, {
         headers: { Authorization: `Bearer ${token}` },
       });
       
@@ -90,7 +92,7 @@ const Admin = () => {
       }
 
       // Fetch applications
-      const appsRes = await fetch(`${API_URL}/admin/applications`, {
+      const appsRes = await fetch(`${API_ENDPOINTS.APPLICATIONS.LIST}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -113,7 +115,7 @@ const Admin = () => {
     if (!token) return;
 
     try {
-      const response = await fetch(`${API_URL}/admin/applications/${appId}/status`, {
+      const response = await fetch(`${API_ENDPOINTS.APPLICATIONS.UPDATE(appId)}/status`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -142,7 +144,7 @@ const Admin = () => {
     if (!token) return;
 
     try {
-      const response = await fetch(`${API_URL}/admin/news`, {
+      const response = await fetch(`${API_ENDPOINTS.NEWS.LIST}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -172,8 +174,8 @@ const Admin = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/dashboard");
+    logout();
+    navigate("/");
   };
 
   const getStatusColor = (status: string) => {
@@ -261,53 +263,7 @@ const Admin = () => {
             </div>
 
             {/* Dashboard Tab */}
-            {activeTab === "dashboard" && stats && (
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between pb-2">
-                    <CardTitle className="text-sm font-medium">Total Students</CardTitle>
-                    <Users className="h-4 w-4 text-muted-foreground" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">{stats.totalStudents}</div>
-                    <p className="text-xs text-muted-foreground">Registered users</p>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between pb-2">
-                    <CardTitle className="text-sm font-medium">Total Applications</CardTitle>
-                    <FileText className="h-4 w-4 text-muted-foreground" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">{stats.totalApplications}</div>
-                    <p className="text-xs text-muted-foreground">All time</p>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between pb-2">
-                    <CardTitle className="text-sm font-medium">Pending Review</CardTitle>
-                    <Clock className="h-4 w-4 text-muted-foreground" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">{stats.pendingApplications}</div>
-                    <p className="text-xs text-muted-foreground">Need attention</p>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between pb-2">
-                    <CardTitle className="text-sm font-medium">Total Courses</CardTitle>
-                    <BookOpen className="h-4 w-4 text-muted-foreground" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">{stats.totalCourses}</div>
-                    <p className="text-xs text-muted-foreground">Available programs</p>
-                  </CardContent>
-                </Card>
-              </div>
-            )}
+            {activeTab === "dashboard" && <AdminDashboard />}
 
             {/* Applications Tab */}
             {activeTab === "applications" && (

@@ -9,18 +9,20 @@ import { Calendar, BookOpen, FileText, User, LogIn } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { API_ENDPOINTS } from "@/config/api";
+import { UserData } from "@/types";
 import toast from "react-hot-toast";
-
-const API_URL = "http://localhost:5000/api";
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const { logout } = useAuth();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [userData, setUserData] = useState<any>(null);
+  const [userData, setUserData] = useState<UserData | null>(null);
 
   useEffect(() => {
     // Check if user is already logged in
@@ -65,7 +67,7 @@ const Dashboard = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(`${API_URL}/auth/login`, {
+      const response = await fetch(API_ENDPOINTS.AUTH.LOGIN, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -103,12 +105,12 @@ const Dashboard = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    logout();
     setIsLoggedIn(false);
     setUserData(null);
     setEmail("");
     setPassword("");
-    toast.success("Logged out successfully");
+    navigate("/");
   };
 
   const handleForgotPassword = () => {

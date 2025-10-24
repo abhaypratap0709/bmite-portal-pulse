@@ -2,17 +2,16 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const User = require('../models/User.model');
 const Course = require('../models/Course.model');
+const Application = require('../models/Application.model');
 const News = require('../models/News.model');
 const Placement = require('../models/Placement.model');
 const Testimonial = require('../models/Testimonial.model');
 const Event = require('../models/Event.model');
+const Announcement = require('../models/Announcement.model');
 
 // Connect to MongoDB
 mongoose
-  .connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(process.env.MONGODB_URI)
   .then(() => console.log('✅ MongoDB connected for seeding'))
   .catch((err) => {
     console.error('❌ MongoDB connection error:', err);
@@ -1135,11 +1134,331 @@ const seedData = async () => {
 
     console.log('📅 Events created');
 
+    // Create sample applications
+    const applications = await Application.create([
+      {
+        userId: students[0]._id,
+        courseId: courses[0]._id,
+        status: 'accepted',
+        personalInfo: {
+          fatherName: 'Rajesh Sharma',
+          motherName: 'Sunita Sharma',
+          category: 'general',
+          nationality: 'Indian',
+          emergencyContact: {
+            name: 'Rajesh Sharma',
+            relation: 'Father',
+            phone: '9876543210'
+          }
+        },
+        academicRecords: {
+          tenth: {
+            board: 'CBSE',
+            school: 'Delhi Public School',
+            percentage: 92,
+            yearOfPassing: 2020
+          },
+          twelfth: {
+            board: 'CBSE',
+            school: 'Delhi Public School',
+            stream: 'science',
+            percentage: 88,
+            yearOfPassing: 2022
+          },
+          entrance: {
+            examName: 'JEE Main',
+            rollNumber: 'JEE2022001',
+            score: 285,
+            rank: 15000
+          }
+        },
+        documents: [
+          {
+            documentType: 'photo',
+            fileName: 'photo.jpg',
+            filePath: '/uploads/photo.jpg'
+          },
+          {
+            documentType: 'tenth-marksheet',
+            fileName: 'tenth_marksheet.pdf',
+            filePath: '/uploads/tenth_marksheet.pdf'
+          }
+        ],
+        personalStatement: 'I am passionate about computer science and want to contribute to the tech industry.',
+        preferences: {
+          hostelRequired: true,
+          transportRequired: false,
+          scholarshipInterest: true
+        },
+        submittedAt: new Date('2024-01-15'),
+        reviewedAt: new Date('2024-01-20'),
+        reviewedBy: admin._id,
+        applicationNumber: 'BMIET2024000001',
+        paymentStatus: 'paid',
+        paymentAmount: 500
+      },
+      {
+        userId: students[1]._id,
+        courseId: courses[1]._id,
+        status: 'pending',
+        personalInfo: {
+          fatherName: 'Amit Patel',
+          motherName: 'Kavita Patel',
+          category: 'obc',
+          nationality: 'Indian',
+          emergencyContact: {
+            name: 'Amit Patel',
+            relation: 'Father',
+            phone: '9876543211'
+          }
+        },
+        academicRecords: {
+          tenth: {
+            board: 'GSEB',
+            school: 'Gujarat High School',
+            percentage: 89,
+            yearOfPassing: 2020
+          },
+          twelfth: {
+            board: 'GSEB',
+            school: 'Gujarat High School',
+            stream: 'science',
+            percentage: 85,
+            yearOfPassing: 2022
+          },
+          entrance: {
+            examName: 'JEE Main',
+            rollNumber: 'JEE2022002',
+            score: 265,
+            rank: 25000
+          }
+        },
+        documents: [
+          {
+            documentType: 'photo',
+            fileName: 'photo.jpg',
+            filePath: '/uploads/photo.jpg'
+          }
+        ],
+        personalStatement: 'I want to pursue mechanical engineering to design innovative solutions.',
+        preferences: {
+          hostelRequired: true,
+          transportRequired: true,
+          scholarshipInterest: false
+        },
+        submittedAt: new Date('2024-02-10'),
+        applicationNumber: 'BMIET2024000002',
+        paymentStatus: 'paid',
+        paymentAmount: 500
+      },
+      {
+        userId: students[2]._id,
+        courseId: courses[2]._id,
+        status: 'rejected',
+        personalInfo: {
+          fatherName: 'Vikram Singh',
+          motherName: 'Meera Singh',
+          category: 'sc',
+          nationality: 'Indian',
+          emergencyContact: {
+            name: 'Vikram Singh',
+            relation: 'Father',
+            phone: '9876543212'
+          }
+        },
+        academicRecords: {
+          tenth: {
+            board: 'UP Board',
+            school: 'UP Public School',
+            percentage: 78,
+            yearOfPassing: 2020
+          },
+          twelfth: {
+            board: 'UP Board',
+            school: 'UP Public School',
+            stream: 'science',
+            percentage: 72,
+            yearOfPassing: 2022
+          },
+          entrance: {
+            examName: 'JEE Main',
+            rollNumber: 'JEE2022003',
+            score: 180,
+            rank: 150000
+          }
+        },
+        documents: [
+          {
+            documentType: 'photo',
+            fileName: 'photo.jpg',
+            filePath: '/uploads/photo.jpg'
+          }
+        ],
+        personalStatement: 'I am interested in civil engineering and infrastructure development.',
+        preferences: {
+          hostelRequired: false,
+          transportRequired: true,
+          scholarshipInterest: true
+        },
+        submittedAt: new Date('2024-01-25'),
+        reviewedAt: new Date('2024-02-05'),
+        reviewedBy: admin._id,
+        reviewComments: 'Academic performance below minimum requirements',
+        applicationNumber: 'BMIET2024000003',
+        paymentStatus: 'paid',
+        paymentAmount: 500
+      },
+      {
+        userId: students[0]._id,
+        courseId: courses[3]._id,
+        status: 'submitted',
+        personalInfo: {
+          fatherName: 'Rajesh Sharma',
+          motherName: 'Sunita Sharma',
+          category: 'general',
+          nationality: 'Indian',
+          emergencyContact: {
+            name: 'Rajesh Sharma',
+            relation: 'Father',
+            phone: '9876543210'
+          }
+        },
+        academicRecords: {
+          tenth: {
+            board: 'CBSE',
+            school: 'Delhi Public School',
+            percentage: 92,
+            yearOfPassing: 2020
+          },
+          twelfth: {
+            board: 'CBSE',
+            school: 'Delhi Public School',
+            stream: 'science',
+            percentage: 88,
+            yearOfPassing: 2022
+          },
+          entrance: {
+            examName: 'JEE Main',
+            rollNumber: 'JEE2022001',
+            score: 285,
+            rank: 15000
+          }
+        },
+        documents: [
+          {
+            documentType: 'photo',
+            fileName: 'photo.jpg',
+            filePath: '/uploads/photo.jpg'
+          }
+        ],
+        personalStatement: 'Second application for electrical engineering program.',
+        preferences: {
+          hostelRequired: true,
+          transportRequired: false,
+          scholarshipInterest: true
+        },
+        submittedAt: new Date('2024-03-01'),
+        applicationNumber: 'BMIET2024000004',
+        paymentStatus: 'paid',
+        paymentAmount: 500
+      }
+    ]);
+
+    console.log('📝 Applications created');
+
+    // Create sample announcements
+    const announcements = await Announcement.create([
+      {
+        title: 'Important: Mid-Semester Examination Schedule Released',
+        description: 'The mid-semester examination schedule for all courses has been released. Please check the academic calendar for your respective examination dates. Students are advised to prepare thoroughly and reach the examination hall 15 minutes before the scheduled time. For any queries, contact the examination cell.',
+        category: 'Examination',
+        priority: 'high',
+        targetAudience: ['students'],
+        author: admin._id,
+        authorName: admin.profile.firstName + ' ' + admin.profile.lastName,
+        publishDate: new Date(),
+        isPinned: true,
+        tags: ['examination', 'schedule', 'important'],
+      },
+      {
+        title: 'Campus Maintenance - Internet Services',
+        description: 'Scheduled maintenance of internet services will be carried out on Saturday, March 23rd, 2024 from 10:00 PM to 2:00 AM. During this time, internet connectivity may be intermittent. We apologize for any inconvenience caused.',
+        category: 'Maintenance',
+        priority: 'medium',
+        targetAudience: ['all'],
+        author: admin._id,
+        authorName: admin.profile.firstName + ' ' + admin.profile.lastName,
+        publishDate: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 hours ago
+        expiryDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // 3 days from now
+        tags: ['maintenance', 'internet'],
+      },
+      {
+        title: 'Tech Fest 2024 - Registration Open',
+        description: 'BMIET Tech Fest 2024 is here! Registration is now open for various technical competitions including coding contests, robotics challenges, and innovation showcases. Prizes worth ₹50,000 up for grabs! Register at the student portal before March 30th, 2024.',
+        category: 'Event',
+        priority: 'medium',
+        targetAudience: ['students'],
+        author: admin._id,
+        authorName: admin.profile.firstName + ' ' + admin.profile.lastName,
+        publishDate: new Date(Date.now() - 24 * 60 * 60 * 1000), // 1 day ago
+        tags: ['techfest', 'competition', 'registration'],
+      },
+      {
+        title: 'Placement Drive - Google Interview Preparation Workshop',
+        description: 'A special workshop on interview preparation for Google placements will be conducted by our alumni who are currently working at Google. The workshop will cover technical interview strategies, coding best practices, and behavioral interview tips. Limited seats available!',
+        category: 'Placement',
+        priority: 'high',
+        targetAudience: ['students'],
+        author: admin._id,
+        authorName: admin.profile.firstName + ' ' + admin.profile.lastName,
+        publishDate: new Date(Date.now() - 3 * 60 * 60 * 1000), // 3 hours ago
+        expiryDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days from now
+        tags: ['placement', 'google', 'workshop'],
+      },
+      {
+        title: 'Library Services Update',
+        description: 'The library will now remain open till 11:00 PM on weekdays to provide extended study hours for students. New books have been added to the computer science and engineering sections. Digital resources are also available through the online portal.',
+        category: 'General',
+        priority: 'low',
+        targetAudience: ['students', 'faculty'],
+        author: admin._id,
+        authorName: admin.profile.firstName + ' ' + admin.profile.lastName,
+        publishDate: new Date(Date.now() - 6 * 60 * 60 * 1000), // 6 hours ago
+        tags: ['library', 'services'],
+      },
+      {
+        title: 'Emergency Contact Information Update',
+        description: 'Please ensure your emergency contact information is up to date in the student portal. This information is crucial for safety and communication purposes. Students can update their emergency contacts through the profile section.',
+        category: 'Emergency',
+        priority: 'medium',
+        targetAudience: ['students'],
+        author: admin._id,
+        authorName: admin.profile.firstName + ' ' + admin.profile.lastName,
+        publishDate: new Date(Date.now() - 12 * 60 * 60 * 1000), // 12 hours ago
+        tags: ['emergency', 'contact', 'safety'],
+      },
+      {
+        title: 'Academic Calendar - Spring Semester 2024',
+        description: 'The academic calendar for Spring Semester 2024 has been updated. Important dates include: Mid-semester exams (March 25-30), Spring break (April 1-7), Final exams (May 15-25), and Summer vacation begins (May 26). Please plan your schedule accordingly.',
+        category: 'Academic',
+        priority: 'medium',
+        targetAudience: ['students', 'faculty'],
+        author: admin._id,
+        authorName: admin.profile.firstName + ' ' + admin.profile.lastName,
+        publishDate: new Date(Date.now() - 36 * 60 * 60 * 1000), // 1.5 days ago
+        tags: ['academic', 'calendar', 'semester'],
+      }
+    ]);
+
+    console.log('📢 Announcements created');
+
     console.log('\n✅ Database seeded successfully!');
     console.log('\n📊 Seeded Data Summary:');
     console.log(`   👥 Users: ${await User.countDocuments()} (1 admin, 1 faculty, 3 students)`);
     console.log(`   📚 Courses: ${await Course.countDocuments()} (7 engineering programs)`);
+    console.log(`   📝 Applications: ${await Application.countDocuments()} (4 sample applications)`);
     console.log(`   📰 News: ${await News.countDocuments()} (6 comprehensive articles)`);
+    console.log(`   📢 Announcements: ${await Announcement.countDocuments()} (7 sample announcements)`);
     console.log(`   🎯 Placements: ${await Placement.countDocuments()} (8 placement records)`);
     console.log(`   💬 Testimonials: ${await Testimonial.countDocuments()} (10 alumni testimonials)`);
     console.log(`   📅 Events: ${await Event.countDocuments()} (8 upcoming events)`);

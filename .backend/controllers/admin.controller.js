@@ -12,6 +12,7 @@ exports.getDashboard = async (req, res, next) => {
     const totalCourses = await Course.countDocuments({ isActive: true });
     const pendingApplications = await Application.countDocuments({ status: 'submitted' });
     const totalApplications = await Application.countDocuments();
+    const totalNews = await News.countDocuments({ status: 'published' });
 
     res.status(200).json({
       success: true,
@@ -20,6 +21,7 @@ exports.getDashboard = async (req, res, next) => {
         totalCourses,
         pendingApplications,
         totalApplications,
+        totalNews,
       },
     });
   } catch (error) {
@@ -206,6 +208,82 @@ exports.deleteNews = async (req, res, next) => {
     res.status(200).json({
       success: true,
       message: 'News article deleted successfully',
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Get comprehensive stats for dashboard
+// @route   GET /api/stats
+// @access  Private (Admin)
+exports.getStats = async (req, res, next) => {
+  try {
+    const [
+      totalStudents,
+      totalCourses,
+      totalApplications,
+      totalNews,
+      pendingApplications,
+      acceptedApplications,
+      rejectedApplications,
+      recentApplications,
+      courseStats,
+      monthlyStats
+    ] = await Promise.all([
+      User.countDocuments({ role: 'student' }),
+      Course.countDocuments({ isActive: true }),
+      Application.countDocuments(),
+      News.countDocuments({ status: 'published' }),
+      Application.countDocuments({ status: 'submitted' }),
+      Application.countDocuments({ status: 'accepted' }),
+      Application.countDocuments({ status: 'rejected' }),
+      Application.countDocuments({ 
+        createdAt: { $gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) }
+      }),
+      Course.aggregate([
+        { $group: { _id: '$department', count: { $sum: 1 } } },
+        { $sort: { count: -1 } }
+      ]),
+      Application.aggregate([
+        {
+          $match: {
+            createdAt: { $gte: new Date(Date.now() - 12 * 30 * 24 * 60 * 60 * 1000) }
+          }
+        },
+        {
+          $group: {
+            _id: {
+              year: { $year: '$createdAt' },
+              month: { $month: '$createdAt' }
+            },
+            count: { $sum: 1 }
+          }
+        },
+        { $sort: { '_id.year': 1, '_id.month': 1 } }
+      ])
+    ]);
+
+    res.status(200).json({
+      success: true,
+      data: {
+        overview: {
+          totalStudents,
+          totalCourses,
+          totalApplications,
+          totalNews,
+        },
+        applications: {
+          pending: pendingApplications,
+          accepted: acceptedApplications,
+          rejected: rejectedApplications,
+          recent: recentApplications,
+        },
+        charts: {
+          courseDistribution: courseStats,
+          monthlyApplications: monthlyStats,
+        },
+      },
     });
   } catch (error) {
     next(error);
