@@ -94,8 +94,12 @@ const FeaturedCourses = () => {
               </CardContent>
               
               <CardFooter>
-                <Button variant="ghost" className="w-full group/btn" asChild>
-                  <a href="/courses">
+                <Button 
+                  variant="ghost" 
+                  className="w-full group/btn transition-all hover:bg-primary hover:text-primary-foreground hover:shadow-md" 
+                  asChild
+                >
+                  <a href="/courses" aria-label={`Learn more about ${course.name}`}>
                     {t("courses.learnMore")}
                     <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
                   </a>
@@ -106,8 +110,16 @@ const FeaturedCourses = () => {
         </div>
 
         <div className="mt-8 text-center">
-          <Button variant="default" size="lg" asChild>
-            <a href="/courses">{t("courses.viewAll")}</a>
+          <Button 
+            variant="default" 
+            size="lg" 
+            asChild
+            className="hover:scale-105 transition-transform shadow-md hover:shadow-lg"
+          >
+            <a href="/courses" aria-label="View all available courses">
+              {t("courses.viewAll")}
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </a>
           </Button>
         </div>
       </div>

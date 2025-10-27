@@ -120,16 +120,16 @@ const Footer = () => {
             <h3 className="mb-4 text-lg font-semibold">Contact Us</h3>
             <ul className="mb-4 space-y-2 text-sm text-muted-foreground">
               <li className="flex items-start gap-2">
-                <MapPin className="h-4 w-4 mt-1 flex-shrink-0" />
-                <span>BMIET Campus, Education District, City, State 123456</span>
+                <MapPin className="h-4 w-4 mt-1 flex-shrink-0" aria-hidden="true" />
+                <span>BMIET Campus, Bundelkhand University Campus, Jhansi, Uttar Pradesh 284128</span>
               </li>
               <li className="flex items-center gap-2">
-                <Phone className="h-4 w-4" />
-                <span>+91 1234567890</span>
+                <Phone className="h-4 w-4" aria-hidden="true" />
+                <span>+91 0510 298 0001</span>
               </li>
               <li className="flex items-center gap-2">
-                <Mail className="h-4 w-4" />
-                <span>info@bmiet.edu.in</span>
+                <Mail className="h-4 w-4" aria-hidden="true" />
+                <a href="mailto:info@bmiet.edu.in" className="hover:text-primary transition-colors">info@bmiet.edu.in</a>
               </li>
             </ul>
             
@@ -158,8 +158,21 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="mt-8 border-t pt-8 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} Bhagwan Mahaveer Institute of Engineering & Technology. All rights reserved.</p>
+        <div className="mt-8 border-t pt-8">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
+            <p>&copy; {new Date().getFullYear()} Bhagwan Mahaveer Institute of Engineering & Technology. All rights reserved.</p>
+            <div className="flex gap-6">
+              <Link to="/privacy" className="hover:text-primary transition-colors">
+                Privacy Policy
+              </Link>
+              <Link to="/terms" className="hover:text-primary transition-colors">
+                Terms of Service
+              </Link>
+              <Link to="/contact" className="hover:text-primary transition-colors">
+                Contact Us
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </footer>
