@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { CheckCircle2, Calendar, FileText, CreditCard, UserCheck } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import toast from "react-hot-toast";
 
 const Admissions = () => {
   const [selectedCourse, setSelectedCourse] = useState("");
@@ -62,6 +63,24 @@ const Admissions = () => {
   };
 
   const total = tuition + hostel + other;
+
+  const handleFeeCalculatorSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedCourse) {
+      toast.error("Please select a course");
+      return;
+    }
+    toast.success(`Fee calculation complete: ₹${total.toLocaleString()}/year`);
+  };
+
+  const handleApplyNow = () => {
+    if (!selectedCourse) {
+      toast.error("Please calculate fees first");
+      return;
+    }
+    toast.success("Redirecting to application form...");
+    // In real implementation, this would redirect to the application form
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -134,68 +153,70 @@ const Admissions = () => {
                     Calculate your total annual fees including tuition, hostel, and other charges.
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="course">Select Course</Label>
-                    <Select value={selectedCourse} onValueChange={handleCourseChange}>
-                      <SelectTrigger id="course">
-                        <SelectValue placeholder="Choose your course" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {courses.map((course) => (
-                          <SelectItem key={course.name} value={course.name}>
-                            {course.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="tuition">Tuition Fees (₹)</Label>
-                    <Input
-                      id="tuition"
-                      type="number"
-                      value={tuition}
-                      readOnly
-                      className="bg-muted"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="hostel">Hostel Fees (₹)</Label>
-                    <Input
-                      id="hostel"
-                      type="number"
-                      value={hostel}
-                      onChange={(e) => setHostel(Number(e.target.value))}
-                      placeholder="Enter hostel fees (if applicable)"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="other">Other Fees (₹)</Label>
-                    <Input
-                      id="other"
-                      type="number"
-                      value={other}
-                      onChange={(e) => setOther(Number(e.target.value))}
-                      placeholder="Enter other fees (books, transport, etc.)"
-                    />
-                  </div>
-
-                  <div className="border-t pt-4">
-                    <div className="flex items-center justify-between">
-                      <span className="text-lg font-semibold">Total Annual Fees:</span>
-                      <span className="text-2xl font-bold text-primary">
-                        ₹ {total.toLocaleString()}
-                      </span>
+                <CardContent>
+                  <form onSubmit={handleFeeCalculatorSubmit} className="space-y-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="course">Select Course</Label>
+                      <Select value={selectedCourse} onValueChange={handleCourseChange}>
+                        <SelectTrigger id="course">
+                          <SelectValue placeholder="Choose your course" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {courses.map((course) => (
+                            <SelectItem key={course.name} value={course.name}>
+                              {course.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </div>
-                  </div>
 
-                  <Button className="w-full" size="lg">
-                    Apply Now
-                  </Button>
+                    <div className="space-y-2">
+                      <Label htmlFor="tuition">Tuition Fees (₹)</Label>
+                      <Input
+                        id="tuition"
+                        type="number"
+                        value={tuition}
+                        readOnly
+                        className="bg-muted"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="hostel">Hostel Fees (₹)</Label>
+                      <Input
+                        id="hostel"
+                        type="number"
+                        value={hostel}
+                        onChange={(e) => setHostel(Number(e.target.value))}
+                        placeholder="Enter hostel fees (if applicable)"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="other">Other Fees (₹)</Label>
+                      <Input
+                        id="other"
+                        type="number"
+                        value={other}
+                        onChange={(e) => setOther(Number(e.target.value))}
+                        placeholder="Enter other fees (books, transport, etc.)"
+                      />
+                    </div>
+
+                    <div className="border-t pt-4">
+                      <div className="flex items-center justify-between">
+                        <span className="text-lg font-semibold">Total Annual Fees:</span>
+                        <span className="text-2xl font-bold text-primary">
+                          ₹ {total.toLocaleString()}
+                        </span>
+                      </div>
+                    </div>
+
+                    <Button className="w-full" size="lg" type="button" onClick={handleApplyNow}>
+                      Apply Now
+                    </Button>
+                  </form>
                 </CardContent>
               </Card>
             </div>

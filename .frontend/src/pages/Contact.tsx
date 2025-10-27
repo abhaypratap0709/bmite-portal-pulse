@@ -24,8 +24,51 @@ const Contact = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validatePhone = (phone: string) => {
+    if (!phone) return true; // Phone is optional
+    const phoneRegex = /^[+]?[(]?[0-9]{1,4}[)]?[-\s.]?[(]?[0-9]{1,4}[)]?[-\s.]?[0-9]{1,9}$/;
+    return phoneRegex.test(phone.replace(/\s/g, ''));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validation
+    if (!formData.name.trim()) {
+      toast.error("Please enter your name");
+      return;
+    }
+    
+    if (!formData.email.trim()) {
+      toast.error("Please enter your email address");
+      return;
+    }
+    
+    if (!validateEmail(formData.email)) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
+    
+    if (formData.phone && !validatePhone(formData.phone)) {
+      toast.error("Please enter a valid phone number");
+      return;
+    }
+    
+    if (!formData.subject.trim()) {
+      toast.error("Please enter a subject");
+      return;
+    }
+    
+    if (!formData.message.trim()) {
+      toast.error("Please enter your message");
+      return;
+    }
+    
     setLoading(true);
     
     try {
